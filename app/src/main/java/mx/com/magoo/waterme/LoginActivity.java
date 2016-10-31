@@ -8,7 +8,7 @@ import android.widget.Button;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public Button btnSignup;
+    public Button btnLogin, btnSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void getWidgets() {
         this.btnSignup = (Button) findViewById(R.id.btnSignup);
+        this.btnLogin = (Button) findViewById(R.id.btnLogin);
     }
 
     public void setWidgetsFunctionalities() {
@@ -27,6 +28,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
+            }
+        });
+        this.btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, MyPlantsActivity.class);
                 startActivity(intent);
             }
         });
