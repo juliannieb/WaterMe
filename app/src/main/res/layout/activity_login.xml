@@ -21,14 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="25dp">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ingresar"
+                android:text="@string/login"
                 android:textSize="25sp"
                 android:layout_gravity="center"
                 android:textColor="@color/colorPrimary"/>
@@ -36,13 +36,13 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Usuario"
+                android:hint="@string/email"
                 android:layout_marginTop="20dp"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Contraseña"
+                android:hint="@string/password"
                 android:layout_marginTop="10dp"/>
 
         </LinearLayout>
@@ -51,16 +51,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginLeft="25dp"
-            android:layout_marginRight="25dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical"
             android:gravity="bottom">
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Registrar"
+                android:text="@string/signup"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/transparent"
                 android:textColor="@color/colorPrimary"
@@ -69,7 +69,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Entrar"
+                android:text="@string/login"
                 android:background="@color/colorPrimary"
                 android:textColor="@color/white"/>
 

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WaterMe</string>
+    <string name="login">Ingresar</string>
+    <string name="signup">Registrar</string>
+    <string name="username">Usuario</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="password_confirm">Confirmar Contraseña</string>
+    <string name="name">Nombre</string>
 </resources>
