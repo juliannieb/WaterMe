@@ -5,9 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public EditText editTxtEmail, editTxtPassword;
     public Button btnLogin, btnSignup;
 
     @Override
@@ -19,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void getWidgets() {
+        this.editTxtEmail = (EditText) findViewById(R.id.editTxtEmail);
+        this.editTxtPassword = (EditText) findViewById(R.id.editTxtPassword);
         this.btnSignup = (Button) findViewById(R.id.btnSignup);
         this.btnLogin = (Button) findViewById(R.id.btnLogin);
     }
@@ -34,9 +42,30 @@ public class LoginActivity extends AppCompatActivity {
         this.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MyPlantsActivity.class);
-                startActivity(intent);
+                login();
             }
         });
+    }
+
+    public void login() {
+        String email = this.editTxtEmail.getText().toString();
+        String password = this.editTxtPassword.getText().toString();
+        if (!email.equals("") && !password.equals("")) {
+            ParseUser.logInInBackground(email, password, new LogInCallback() {
+                @Override
+                public void done(ParseUser user, ParseException e) {
+                    if (e == null) {
+                        Intent intent = new Intent(LoginActivity.this, MyPlantsActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        new Utils().showSimpleAlertDialog(LoginActivity.this, "Usuario o contraseña incorrectos", "OK");
+                    }
+                }
+            });
+        }
+        else {
+            new Utils().showSimpleAlertDialog(LoginActivity.this, "Por favor llena todos los campos", "OK");
+        }
     }
 }

@@ -34,16 +34,20 @@
                 android:textColor="@color/colorPrimary"/>
 
             <EditText
+                android:id="@+id/editTxtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:inputType="textEmailAddress"/>
 
             <EditText
+                android:id="@+id/editTxtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginTop="10dp"
+                android:inputType="textPassword"/>
 
         </LinearLayout>
 
