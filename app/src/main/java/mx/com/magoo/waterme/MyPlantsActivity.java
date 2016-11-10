@@ -9,7 +9,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -53,6 +59,16 @@ public class MyPlantsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 new WaterTask().execute("http://10.25.49.234/?time=5");
+            }
+        });
+    }
+
+    public void queryPlants() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Plant");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                System.out.println("Hola " + objects.get(0).getString("name"));
             }
         });
     }
