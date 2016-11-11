@@ -7,12 +7,12 @@
         android:id="@+id/action_add_plant"
         android:orderInCategory="200"
         android:title="Add plant"
-        android:icon="@drawable/water_me_logo"
+        android:icon="@mipmap/add_plant"
         app:showAsAction="ifRoom"></item>
     <item
         android:id="@+id/action_profile"
         android:orderInCategory="300"
         android:title="Profile"
-        android:icon="@drawable/water_me_logo"
+        android:icon="@mipmap/profile"
         app:showAsAction="ifRoom"></item>
 </menu>
