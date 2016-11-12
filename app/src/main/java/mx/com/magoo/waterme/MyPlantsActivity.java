@@ -1,7 +1,6 @@
 package mx.com.magoo.waterme;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -128,33 +127,4 @@ public class MyPlantsActivity extends AppCompatActivity {
         return plant;
     }
 
-    public class WaterTask extends AsyncTask<String, Void, String> {
-        private static final String TAG = "BackgroundTask";
-
-        @Override
-        protected String doInBackground(String... ulr) {
-            Response response = null;
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    //.header("Authorization", token)
-                    .url(ulr[0])
-                    .build();
-
-            try {
-                response = client.newCall(request).execute();
-                return response.body().string();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            //Log.i("OkHttp :", result);
-            Toast.makeText(MyPlantsActivity.this, result, Toast.LENGTH_LONG).show();
-        }
-
-    }
 }
