@@ -1,7 +1,9 @@
 package mx.com.magoo.waterme;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -34,10 +36,20 @@ public class PlantActivity extends AppCompatActivity {
         setPlantInformation();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ParseObject plantAux = getPlantFromApp();
+        if (plantAux != null) {
+            plant = plantAux;
+            getWidgets();
+            setPlantInformation();
+        }
+    }
+
     public ParseObject getPlantFromApp() {
         WaterMe app = (WaterMe) getApplication();
         ParseObject plant = app.plant;
-        app.plant = null;
         return plant;
     }
 
@@ -47,6 +59,9 @@ public class PlantActivity extends AppCompatActivity {
         txtPlantDescription = (TextView) findViewById(R.id.txtPlantDescription);
         txtDeviceID = (TextView) findViewById(R.id.txtDeviceID);
         txtWateringDays = (TextView) findViewById(R.id.txtWateringDays);
+        btnEdit = (Button) findViewById(R.id.btnEdit);
+        btnErase = (Button) findViewById(R.id.btnErase);
+        btnWater = (Button) findViewById(R.id.btnWater);
     }
 
     public void setPlantInformation() {
@@ -83,6 +98,28 @@ public class PlantActivity extends AppCompatActivity {
             }
             txtWateringDays.setText("Regar: " + wateringDaysString);
         }
+
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WaterMe app = (WaterMe) getApplication();
+                app.plant = PlantActivity.this.plant;
+                Intent intent = new Intent(PlantActivity.this, AddPlantActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnErase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        btnWater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 }

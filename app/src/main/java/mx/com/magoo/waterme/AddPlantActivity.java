@@ -7,25 +7,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.Arrays;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AddPlantActivity extends AppCompatActivity {
 
+    TextView txtTitle;
     EditText editTextPlantName, editTextPlantDescription, editTextDeviceID, editTextDevicePassword;
     Button btnsWateringDays[] = new Button[7];
     CircleImageView imgPlant;
     Button btnSave;
     Boolean wateringDays[] = {false, false, false, false, false, false, false};
+    ParseObject plant = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +39,16 @@ public class AddPlantActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_plant);
         getWidgets();
         setWidgetsFunctionalities();
+        plant = getPlantFromApp();
+        if (plant != null) {
+            txtTitle.setText("Editar Planta");
+            btnSave.setText("Guardar");
+            setPlantInformation();
+        }
     }
 
     public void getWidgets() {
+        txtTitle = (TextView) findViewById(R.id.txtTitle);
         editTextPlantName = (EditText) findViewById(R.id.editTxtPlantName);
         editTextPlantDescription = (EditText) findViewById(R.id.editTxtPlantDescription);
         editTextDeviceID = (EditText) findViewById(R.id.editTxtDeviceID);
@@ -86,6 +99,13 @@ public class AddPlantActivity extends AppCompatActivity {
         });
     }
 
+    public ParseObject getPlantFromApp() {
+        WaterMe app = (WaterMe) getApplication();
+        ParseObject plant = app.plant;
+        app.plant = null;
+        return plant;
+    }
+
     public void savePlant() {
         String plantName = editTextPlantName.getText().toString();
         String plantDescription = editTextPlantDescription.getText().toString();
@@ -104,15 +124,20 @@ public class AddPlantActivity extends AppCompatActivity {
                 if (e == null && object != null) {
                     ParseUser currentUser = ParseUser.getCurrentUser();
                     ParseObject waterDevice = object;
-                    ParseObject plant = new ParseObject("Plant");
+                    ParseObject plant;
+                    if (AddPlantActivity.this.plant == null) {
+                        plant = new ParseObject("Plant");
+                    }
+                    else {
+                        plant = AddPlantActivity.this.plant;
+                    }
                     plant.put("name", plantName);
                     plant.put("description", plantDescription);
                     plant.put("wateringDays", Arrays.asList(wateringDays));
                     plant.put("user", currentUser);
                     plant.put("waterDevice", waterDevice);
                     savePlantObject(plant);
-                }
-                else {
+                } else {
                     new Utils().showSimpleAlertDialog(AddPlantActivity.this, "Verifica que los datos del dispositivo sean correctos.", "OK");
                 }
             }
@@ -127,12 +152,52 @@ public class AddPlantActivity extends AppCompatActivity {
                     WaterMe app = (WaterMe) getApplication();
                     app.plant = plant;
                     AddPlantActivity.this.finish();
-                }
-                else {
+                } else {
                     new Utils().showSimpleAlertDialog(AddPlantActivity.this, "Ocurrió un error, por favor intenta de nuevo.", "OK");
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    public void setPlantInformation() {
+        if (plant.getParseFile("image") != null) {
+            ParseFile imgFile = plant.getParseFile("image");
+            String imgUrl = imgFile.getUrl();
+            Glide.with(AddPlantActivity.this).load(imgUrl).into(imgPlant);
+        }
+        if (plant.getString("name") != null) {
+            String name = plant.getString("name");
+            editTextPlantName.setText(name);
+        }
+        if (plant.getString("description") != null) {
+            String description = plant.getString("description");
+            editTextPlantDescription.setText(description);
+        }
+        if (plant.getParseObject("waterDevice") != null) {
+            ParseObject waterDevice = plant.getParseObject("waterDevice");
+            if (waterDevice.getString("ip") != null) {
+                String waterDeviceID = waterDevice.getString("ip");
+                editTextDeviceID.setText(waterDeviceID);
+            }
+            if (waterDevice.getString("password") != null) {
+                String waterDevicePassword = waterDevice.getString("password");
+                editTextDevicePassword.setText(waterDevicePassword);
+            }
+        }
+        if (plant.getList("wateringDays") != null) {
+            List<Boolean> wateringDays = plant.getList("wateringDays");
+            AddPlantActivity.this.wateringDays = wateringDays.toArray(new Boolean[wateringDays.size()]);
+            for (int i = 0; i < wateringDays.size(); i++) {
+                if (wateringDays.get(i)) {
+                    btnsWateringDays[i].setBackgroundColor(ContextCompat.getColor(AddPlantActivity.this, R.color.colorPrimary));
+                    btnsWateringDays[i].setTextColor(ContextCompat.getColor(AddPlantActivity.this, R.color.white));
+                }
+                else {
+                    btnsWateringDays[i].setBackgroundColor(ContextCompat.getColor(AddPlantActivity.this, R.color.gray));
+                    btnsWateringDays[i].setTextColor(ContextCompat.getColor(AddPlantActivity.this, R.color.black));
+                }
+            }
+        }
     }
 }
