@@ -23,7 +23,7 @@
             android:textSize="25sp"/>
 
         <EditText
-            android:id="@+id/txtPlantName"
+            android:id="@+id/editTxtPlantName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name"
@@ -31,7 +31,7 @@
             android:inputType="text"/>
 
         <EditText
-            android:id="@+id/txtPlantDescription"
+            android:id="@+id/editTxtPlantDescription"
             android:inputType="textMultiLine"
             android:lines="2"
             android:minLines="2"
@@ -43,7 +43,7 @@
             android:hint="@string/description"/>
 
         <EditText
-            android:id="@+id/txtDeviceID"
+            android:id="@+id/editTxtDeviceID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/wateringDeviceId"
@@ -51,7 +51,7 @@
             android:inputType="text"/>
 
         <EditText
-            android:id="@+id/txtDevicePassword"
+            android:id="@+id/editTxtDevicePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/wateringDevicePassword"
@@ -76,49 +76,63 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="L"/>
+                android:text="L"
+                android:background="@color/gray"
+                android:layout_margin="2dp"/>
 
             <Button
                 android:id="@+id/btnTuesday"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="M"/>
+                android:text="M"
+                android:background="@color/gray"
+                android:layout_margin="2dp"/>
 
             <Button
                 android:id="@+id/btnWednesday"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="M"/>
+                android:text="M"
+                android:background="@color/gray"
+                android:layout_margin="2dp"/>
 
             <Button
                 android:id="@+id/btnThursday"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="J"/>
+                android:text="J"
+                android:background="@color/gray"
+                android:layout_margin="2dp"/>
 
             <Button
                 android:id="@+id/btnFriday"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="V"/>
+                android:text="V"
+                android:background="@color/gray"
+                android:layout_margin="2dp"/>
 
             <Button
                 android:id="@+id/btnSaturday"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="S"/>
+                android:text="S"
+                android:background="@color/gray"
+                android:layout_margin="2dp"/>
 
             <Button
                 android:id="@+id/btnSunday"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="D"/>
+                android:text="D"
+                android:background="@color/gray"
+                android:layout_margin="2dp"/>
 
         </LinearLayout>
 
@@ -136,7 +150,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="10dp"
-            android:src="@drawable/water_me_logo"
+            android:src="@drawable/default_plant_img"
             app:civ_border_width="2dp"
             app:civ_border_color="#FF000000"
             android:layout_gravity="center_horizontal"/>
