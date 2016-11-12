@@ -8,18 +8,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 import java.util.List;
 
 /**
  * Created by julian on 30/10/16.
  */
-public class MyPlantsAdapter extends ArrayAdapter<String> {
+public class MyPlantsAdapter extends ArrayAdapter<ParseObject> {
 
     Context context;
     int resource;
-    String objects[];
+    List<ParseObject> objects;
 
-    public MyPlantsAdapter(Context context, int resource, String objects[]) {
+    public MyPlantsAdapter(Context context, int resource, List<ParseObject> objects) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
@@ -41,10 +44,11 @@ public class MyPlantsAdapter extends ArrayAdapter<String> {
             holder = (PlantHolder) convertView.getTag();
         }
 
-        String plant = objects[position];
+        ParseObject plant = objects.get(position);
 
-        if (plant != null) {
-            holder.txtPlantName.setText(plant);
+        if (plant.getString("name") != null) {
+            String name = plant.getString("name");
+            holder.txtPlantName.setText(name);
         }
 
         return convertView;

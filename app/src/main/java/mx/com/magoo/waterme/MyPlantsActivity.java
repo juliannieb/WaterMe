@@ -17,6 +17,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.io.IOException;
 import java.util.List;
@@ -73,37 +74,34 @@ public class MyPlantsActivity extends AppCompatActivity {
     }
 
     public void setWidgetsFunctionalities() {
-        setListView();
+        queryPlants();
     }
 
-    public void setListView() {
-        String plants[] = new String [10];
-        plants[0] = "Plant 1";
-        plants[1] = "Plant 2";
-        plants[2] = "Plant 3";
-        plants[3] = "Plant 4";
-        plants[4] = "Plant 5";
-        plants[5] = "Plant 6";
-        plants[6] = "Plant 7";
-        plants[7] = "Plant 8";
-        plants[8] = "Plant 9";
-        plants[9] = "Plant 10";
+    public void queryPlants() {
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Plant");
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            query.whereEqualTo("user", currentUser);
+        }
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    setPlantsList(objects);
+                } else {
+                    new Utils().showSimpleAlertDialog(MyPlantsActivity.this, "Ocurrió un error, por favor inténtalo de nuevo.", "OK");
+                }
+            }
+        });
+    }
+
+    public void setPlantsList(List<ParseObject> plants) {
         MyPlantsAdapter myPlantsAdapter = new MyPlantsAdapter(MyPlantsActivity.this, R.layout.my_plants_list_item, plants);
         this.listViewMyPlants.setAdapter(myPlantsAdapter);
         this.listViewMyPlants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 new WaterTask().execute("http://10.25.49.234/?time=5");
-            }
-        });
-    }
-
-    public void queryPlants() {
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Plant");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> objects, ParseException e) {
-                System.out.println("Hola " + objects.get(0).getString("name"));
             }
         });
     }
