@@ -1,5 +1,6 @@
 package mx.com.magoo.waterme;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -60,6 +61,8 @@ public class MyPlantsActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add_plant) {
+            Intent intent = new Intent(MyPlantsActivity.this, AddPlantActivity.class);
+            startActivity(intent);
             return true;
         }
         else if (id == R.id.action_profile) {
@@ -101,7 +104,7 @@ public class MyPlantsActivity extends AppCompatActivity {
         this.listViewMyPlants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                new WaterTask().execute("http://10.25.49.234/?time=5");
+                //new WaterTask().execute("http://10.25.49.234/?time=5");
             }
         });
     }
