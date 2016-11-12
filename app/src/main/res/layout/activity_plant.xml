@@ -47,6 +47,16 @@
             android:lines="3"/>
 
         <TextView
+            android:id="@+id/txtPlantTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            android:text="@string/time"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"/>
+
+        <TextView
             android:id="@+id/txtDeviceID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

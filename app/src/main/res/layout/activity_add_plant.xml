@@ -44,6 +44,14 @@
             android:hint="@string/description"/>
 
         <EditText
+            android:id="@+id/editTxtTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/time"
+            android:maxLines="1"
+            android:inputType="number"/>
+
+        <EditText
             android:id="@+id/editTxtDeviceID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

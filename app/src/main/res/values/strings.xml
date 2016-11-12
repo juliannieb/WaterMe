@@ -15,4 +15,5 @@
     <string name="edit">Editar</string>
     <string name="erase">Eliminar</string>
     <string name="water">Regar</string>
+    <string name="time">Tiempo de riego (segundos)</string>
 </resources>

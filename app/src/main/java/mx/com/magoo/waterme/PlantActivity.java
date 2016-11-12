@@ -26,7 +26,7 @@ import okhttp3.Response;
 public class PlantActivity extends AppCompatActivity {
 
     private CircleImageView imgPlant;
-    private TextView txtPlantName, txtPlantDescription, txtDeviceID, txtWateringDays;
+    private TextView txtPlantName, txtPlantDescription, txtPlantTime, txtDeviceID, txtWateringDays;
     private Button btnEdit, btnErase, btnWater;
 
     ParseObject plant = null;
@@ -62,6 +62,7 @@ public class PlantActivity extends AppCompatActivity {
     public void getWidgets() {
         imgPlant = (CircleImageView) findViewById(R.id.imgPlant);
         txtPlantName = (TextView) findViewById(R.id.txtPlantName);
+        txtPlantTime = (TextView) findViewById(R.id.txtPlantTime);
         txtPlantDescription = (TextView) findViewById(R.id.txtPlantDescription);
         txtDeviceID = (TextView) findViewById(R.id.txtDeviceID);
         txtWateringDays = (TextView) findViewById(R.id.txtWateringDays);
@@ -83,6 +84,10 @@ public class PlantActivity extends AppCompatActivity {
         if (plant.getString("description") != null) {
             String description = plant.getString("description");
             txtPlantDescription.setText(description);
+        }
+        if (plant.getString("waterTime") != null) {
+            String waterTime = plant.getString("waterTime");
+            txtPlantTime.setText("Tiempo de riego (segundos): " + waterTime);
         }
         if (plant.getParseObject("waterDevice") != null) {
             ParseObject waterDevice = plant.getParseObject("waterDevice");
@@ -126,7 +131,8 @@ public class PlantActivity extends AppCompatActivity {
                 if (plant.getParseObject("waterDevice") != null) {
                     ParseObject waterDevice = plant.getParseObject("waterDevice");
                     String deviceID = waterDevice.getString("ip");
-                    String url = "http://" + deviceID + "/?time=5";
+                    String waterTime = plant.getString("waterTime");
+                    String url = "http://" + deviceID + "/?time=" + waterTime;
                     new WaterTask().execute(url);
                 }
             }

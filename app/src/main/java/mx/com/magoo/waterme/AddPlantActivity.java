@@ -26,7 +26,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AddPlantActivity extends AppCompatActivity {
 
     TextView txtTitle;
-    EditText editTextPlantName, editTextPlantDescription, editTextDeviceID, editTextDevicePassword;
+    EditText editTextPlantName, editTextPlantDescription, editTextTime, editTextDeviceID, editTextDevicePassword;
     Button btnsWateringDays[] = new Button[7];
     CircleImageView imgPlant;
     Button btnSave;
@@ -51,6 +51,7 @@ public class AddPlantActivity extends AppCompatActivity {
         txtTitle = (TextView) findViewById(R.id.txtTitle);
         editTextPlantName = (EditText) findViewById(R.id.editTxtPlantName);
         editTextPlantDescription = (EditText) findViewById(R.id.editTxtPlantDescription);
+        editTextTime = (EditText) findViewById(R.id.editTxtTime);
         editTextDeviceID = (EditText) findViewById(R.id.editTxtDeviceID);
         editTextDevicePassword = (EditText) findViewById(R.id.editTxtDevicePassword);
         Button btnMonday = (Button) findViewById(R.id.btnMonday);
@@ -109,12 +110,13 @@ public class AddPlantActivity extends AppCompatActivity {
     public void savePlant() {
         String plantName = editTextPlantName.getText().toString();
         String plantDescription = editTextPlantDescription.getText().toString();
+        String plantWaterTime = editTextTime.getText().toString();
         String deviceID = editTextDeviceID.getText().toString();
         String devicePassword = editTextDevicePassword.getText().toString();
-        checkDevice(plantName, plantDescription, deviceID, devicePassword);
+        checkDevice(plantName, plantDescription, plantWaterTime, deviceID, devicePassword);
     }
 
-    public void checkDevice(final String plantName, final String plantDescription, String deviceID, String devicePassword) {
+    public void checkDevice(final String plantName, final String plantDescription, final String plantWaterTime, String deviceID, String devicePassword) {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("WaterDevice");
         query.whereEqualTo("ip", deviceID);
         query.whereEqualTo("password", devicePassword);
@@ -133,6 +135,7 @@ public class AddPlantActivity extends AppCompatActivity {
                     }
                     plant.put("name", plantName);
                     plant.put("description", plantDescription);
+                    plant.put("waterTime", plantWaterTime);
                     plant.put("wateringDays", Arrays.asList(wateringDays));
                     plant.put("user", currentUser);
                     plant.put("waterDevice", waterDevice);
@@ -173,6 +176,10 @@ public class AddPlantActivity extends AppCompatActivity {
         if (plant.getString("description") != null) {
             String description = plant.getString("description");
             editTextPlantDescription.setText(description);
+        }
+        if (plant.getString("waterTime") != null) {
+            String waterTime = plant.getString("waterTime");
+            editTextTime.setText(waterTime);
         }
         if (plant.getParseObject("waterDevice") != null) {
             ParseObject waterDevice = plant.getParseObject("waterDevice");
