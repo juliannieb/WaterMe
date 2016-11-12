@@ -46,6 +46,14 @@ public class MyPlantsActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (getPlantFromApp() != null) {
+            queryPlants();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_my_plants, menu);
@@ -86,6 +94,7 @@ public class MyPlantsActivity extends AppCompatActivity {
         if (currentUser != null) {
             query.whereEqualTo("user", currentUser);
         }
+        query.include("waterDevice");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
@@ -98,15 +107,25 @@ public class MyPlantsActivity extends AppCompatActivity {
         });
     }
 
-    public void setPlantsList(List<ParseObject> plants) {
+    public void setPlantsList(final List<ParseObject> plants) {
         MyPlantsAdapter myPlantsAdapter = new MyPlantsAdapter(MyPlantsActivity.this, R.layout.my_plants_list_item, plants);
         this.listViewMyPlants.setAdapter(myPlantsAdapter);
         this.listViewMyPlants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //new WaterTask().execute("http://10.25.49.234/?time=5");
+                WaterMe app = (WaterMe) getApplication();
+                app.plant = plants.get(position);
+                Intent intent = new Intent(MyPlantsActivity.this, PlantActivity.class);
+                startActivity(intent);
             }
         });
+    }
+
+    public ParseObject getPlantFromApp() {
+        WaterMe app = (WaterMe) getApplication();
+        ParseObject plant = app.plant;
+        app.plant = null;
+        return plant;
     }
 
     public class WaterTask extends AsyncTask<String, Void, String> {

@@ -119,11 +119,13 @@ public class AddPlantActivity extends AppCompatActivity {
         });
     }
 
-    public void savePlantObject(ParseObject plant) {
+    public void savePlantObject(final ParseObject plant) {
         plant.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    WaterMe app = (WaterMe) getApplication();
+                    app.plant = plant;
                     AddPlantActivity.this.finish();
                 }
                 else {

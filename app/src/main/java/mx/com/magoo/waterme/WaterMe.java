@@ -3,11 +3,15 @@ package mx.com.magoo.waterme;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 /**
  * Created by julian on 10/11/16.
  */
 public class WaterMe extends Application {
+
+    public ParseObject plant;
+
     @Override
     public void onCreate() {
         super.onCreate();
