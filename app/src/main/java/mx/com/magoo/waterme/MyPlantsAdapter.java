@@ -8,10 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.parse.Parse;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by julian on 30/10/16.
@@ -21,6 +25,7 @@ public class MyPlantsAdapter extends ArrayAdapter<ParseObject> {
     Context context;
     int resource;
     List<ParseObject> objects;
+    String daysNames[] = {"Lun", "Mar", "Mie", "Jue", "Vie", "Sáb", "Dom"};
 
     public MyPlantsAdapter(Context context, int resource, List<ParseObject> objects) {
         super(context, resource, objects);
@@ -37,8 +42,9 @@ public class MyPlantsAdapter extends ArrayAdapter<ParseObject> {
             convertView = inflater.inflate(resource, parent, false);
 
             holder = new PlantHolder();
-            //holder.imagen = (ImageView) convertView.findViewById(R.id.imgPromotion);
+            holder.imgPlant = (CircleImageView) convertView.findViewById(R.id.imgPlant);
             holder.txtPlantName = (TextView) convertView.findViewById(R.id.txtPlantName);
+            holder.txtWateringDays = (TextView) convertView.findViewById(R.id.txtWateringDays);
             convertView.setTag(holder);
         } else {
             holder = (PlantHolder) convertView.getTag();
@@ -46,16 +52,34 @@ public class MyPlantsAdapter extends ArrayAdapter<ParseObject> {
 
         ParseObject plant = objects.get(position);
 
+        if (plant.getParseFile("image") != null) {
+            ParseFile imgFile = plant.getParseFile("image");
+            String imgUrl = imgFile.getUrl();
+            Glide.with(context).load(imgUrl).into(holder.imgPlant);
+        }
         if (plant.getString("name") != null) {
             String name = plant.getString("name");
             holder.txtPlantName.setText(name);
+        }
+        if (plant.getList("wateringDays") != null) {
+            List<Boolean> days = plant.getList("wateringDays");
+            String wateringDays = "";
+            boolean firstDay = true;
+            for (int i = 0; i < days.size(); i++) {
+                if (days.get(i)) {
+                    wateringDays += (firstDay ? daysNames[i] : (", " + daysNames[i]));
+                    if (firstDay)
+                        firstDay = false;
+                }
+            }
+            holder.txtWateringDays.setText("Regar: " + wateringDays);
         }
 
         return convertView;
     }
 
     private static class PlantHolder {
-        ImageView imgPlant;
-        TextView txtPlantName;
+        CircleImageView imgPlant;
+        TextView txtPlantName, txtWateringDays;
     }
 }
