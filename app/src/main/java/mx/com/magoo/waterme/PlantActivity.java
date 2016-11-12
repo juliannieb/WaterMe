@@ -131,7 +131,10 @@ public class PlantActivity extends AppCompatActivity {
                 if (plant.getParseObject("waterDevice") != null) {
                     ParseObject waterDevice = plant.getParseObject("waterDevice");
                     String deviceID = waterDevice.getString("ip");
-                    String waterTime = plant.getString("waterTime");
+                    String waterTime = "0";
+                    if (plant.getString("waterTime") != null && !plant.getString("waterTime").equals("")) {
+                        waterTime = plant.getString("waterTime");
+                    }
                     String url = "http://" + deviceID + "/?time=" + waterTime;
                     new WaterTask().execute(url);
                 }
