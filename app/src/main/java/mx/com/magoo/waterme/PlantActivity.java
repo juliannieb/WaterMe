@@ -1,8 +1,10 @@
 package mx.com.magoo.waterme;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -125,16 +127,29 @@ public class PlantActivity extends AppCompatActivity {
         btnErase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = ProgressDialog.show(PlantActivity.this, "Cargando...",
-                        "Cargando, espere por favor...", false, false);
-                plant.deleteInBackground(new DeleteCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        progressDialog.cancel();
-                        progressDialog = null;
-                        PlantActivity.this.finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(PlantActivity.this);
+                builder.setMessage("¿Está seguro que desea eliminar la planta?");
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        progressDialog = ProgressDialog.show(PlantActivity.this, "Cargando...",
+                                "Cargando, espere por favor...", false, false);
+                        plant.deleteInBackground(new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                progressDialog.cancel();
+                                progressDialog = null;
+                                PlantActivity.this.finish();
+                            }
+                        });
                     }
                 });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
         btnWater.setOnClickListener(new View.OnClickListener() {
