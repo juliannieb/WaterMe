@@ -24,6 +24,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -42,6 +43,7 @@ public class AddPlantActivity extends AppCompatActivity {
     ParseObject plant = null;
     ProgressDialog progressDialog;
     final int PICK_IMAGE = 0;
+    Bitmap imgBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,8 +136,8 @@ public class AddPlantActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             if (imageStream != null) {
-                Bitmap selectedImageBM = BitmapFactory.decodeStream(imageStream);
-                imgPlant.setImageBitmap(selectedImageBM);
+                imgBitmap = BitmapFactory.decodeStream(imageStream);
+                imgPlant.setImageBitmap(imgBitmap);
             }
             //InputStream inputStream = AddPlantActivity.this.getContentResolver().openInputStream(data.getData());
             //Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
@@ -204,6 +206,16 @@ public class AddPlantActivity extends AppCompatActivity {
                     plant.put("wateringDays", Arrays.asList(wateringDays));
                     plant.put("user", currentUser);
                     plant.put("waterDevice", waterDevice);
+                    if (imgBitmap != null) {
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        imgBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] image = stream.toByteArray();
+
+                        // Create the ParseFile
+                        ParseFile file = new ParseFile("plantImg.png", image);
+                        // Upload the image into Parse Cloud
+                        plant.put("image", file);
+                    }
                     savePlantObject(plant);
                 } else {
                     new Utils().showSimpleAlertDialog(AddPlantActivity.this, "Verifica que los datos del dispositivo sean correctos.", "OK");
