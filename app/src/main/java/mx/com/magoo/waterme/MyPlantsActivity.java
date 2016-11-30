@@ -93,6 +93,7 @@ public class MyPlantsActivity extends AppCompatActivity {
         if (currentUser != null) {
             query.whereEqualTo("user", currentUser);
         }
+        query.orderByAscending("name");
         query.include("waterDevice");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
