@@ -1,5 +1,6 @@
 package mx.com.magoo.waterme;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public EditText editTxtEmail, editTxtPassword;
     public Button btnLogin, btnSignup;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         String email = this.editTxtEmail.getText().toString();
         String password = this.editTxtPassword.getText().toString();
         if (!email.equals("") && !password.equals("")) {
+            progressDialog = ProgressDialog.show(LoginActivity.this, "Cargando...",
+                    "Cargando, espere por favor...", false, false);
             ParseUser.logInInBackground(email, password, new LogInCallback() {
                 @Override
                 public void done(ParseUser user, ParseException e) {
+                    progressDialog.cancel();
+                    progressDialog = null;
                     if (e == null) {
                         Intent intent = new Intent(LoginActivity.this, MyPlantsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

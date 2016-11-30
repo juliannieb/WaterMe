@@ -1,5 +1,6 @@
 package mx.com.magoo.waterme;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -28,6 +30,7 @@ public class PlantActivity extends AppCompatActivity {
     private CircleImageView imgPlant;
     private TextView txtPlantName, txtPlantDescription, txtPlantTime, txtDeviceID, txtWateringDays;
     private Button btnEdit, btnErase, btnWater;
+    ProgressDialog progressDialog;
 
     ParseObject plant = null;
 
@@ -122,7 +125,16 @@ public class PlantActivity extends AppCompatActivity {
         btnErase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                progressDialog = ProgressDialog.show(PlantActivity.this, "Cargando...",
+                        "Cargando, espere por favor...", false, false);
+                plant.deleteInBackground(new DeleteCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        progressDialog.cancel();
+                        progressDialog = null;
+                        PlantActivity.this.finish();
+                    }
+                });
             }
         });
         btnWater.setOnClickListener(new View.OnClickListener() {

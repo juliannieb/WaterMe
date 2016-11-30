@@ -1,5 +1,6 @@
 package mx.com.magoo.waterme;
 
+import android.app.ProgressDialog;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class AddPlantActivity extends AppCompatActivity {
     Button btnSave;
     Boolean wateringDays[] = {false, false, false, false, false, false, false};
     ParseObject plant = null;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,9 +150,13 @@ public class AddPlantActivity extends AppCompatActivity {
     }
 
     public void savePlantObject(final ParseObject plant) {
+        progressDialog = ProgressDialog.show(AddPlantActivity.this, "Cargando...",
+                "Cargando, espere por favor...", false, false);
         plant.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                progressDialog.cancel();
+                progressDialog = null;
                 if (e == null) {
                     WaterMe app = (WaterMe) getApplication();
                     app.plant = plant;

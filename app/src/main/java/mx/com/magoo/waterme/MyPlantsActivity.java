@@ -1,5 +1,6 @@
 package mx.com.magoo.waterme;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class MyPlantsActivity extends AppCompatActivity {
 
     private ListView listViewMyPlants;
     private Toolbar toolbar;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +99,13 @@ public class MyPlantsActivity extends AppCompatActivity {
         }
         query.orderByAscending("name");
         query.include("waterDevice");
+        progressDialog = ProgressDialog.show(MyPlantsActivity.this, "Cargando...",
+                "Cargando, espere por favor...", false, false);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
+                progressDialog.cancel();
+                progressDialog = null;
                 if (e == null) {
                     setPlantsList(objects);
                 } else {
