@@ -1,6 +1,11 @@
 package mx.com.magoo.waterme;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +24,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +41,7 @@ public class AddPlantActivity extends AppCompatActivity {
     Boolean wateringDays[] = {false, false, false, false, false, false, false};
     ParseObject plant = null;
     ProgressDialog progressDialog;
+    final int PICK_IMAGE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +101,47 @@ public class AddPlantActivity extends AppCompatActivity {
                 }
             });
         }
-
+        imgPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+            }
+        });
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 savePlant();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                //Display an error
+                return;
+            }
+            Uri selectedImage = data.getData();
+            InputStream imageStream = null;
+            try {
+                imageStream = getContentResolver().openInputStream(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (imageStream != null) {
+                Bitmap selectedImageBM = BitmapFactory.decodeStream(imageStream);
+                imgPlant.setImageBitmap(selectedImageBM);
+            }
+            //InputStream inputStream = AddPlantActivity.this.getContentResolver().openInputStream(data.getData());
+            //Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+            //image.setImageBitmap(bitmap);
+            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
+        }
     }
 
     public ParseObject getPlantFromApp() {
