@@ -109,13 +109,34 @@ public class AddPlantActivity extends AppCompatActivity {
         return plant;
     }
 
+    boolean validTime(String time) {
+        for (int i = 0; i < time.length(); i++) {
+            char c = time.charAt(i);
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void savePlant() {
         String plantName = editTextPlantName.getText().toString();
         String plantDescription = editTextPlantDescription.getText().toString();
         String plantWaterTime = editTextTime.getText().toString();
         String deviceID = editTextDeviceID.getText().toString();
         String devicePassword = editTextDevicePassword.getText().toString();
-        checkDevice(plantName, plantDescription, plantWaterTime, deviceID, devicePassword);
+        if (!plantName.equals("") && !plantDescription.equals("") && !plantWaterTime.equals("")
+                && !deviceID.equals("") && !devicePassword.equals("")) {
+            if (validTime(plantWaterTime)) {
+                checkDevice(plantName, plantDescription, plantWaterTime, deviceID, devicePassword);
+            }
+            else {
+                new Utils().showSimpleAlertDialog(AddPlantActivity.this, "El tiempo debe ser un numero entero.", "OK");
+            }
+        }
+        else {
+            new Utils().showSimpleAlertDialog(AddPlantActivity.this, "Por favor llena todos los campos.", "OK");
+        }
     }
 
     public void checkDevice(final String plantName, final String plantDescription, final String plantWaterTime, String deviceID, String devicePassword) {
