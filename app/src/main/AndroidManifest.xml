@@ -11,18 +11,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".MyPlantsActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SignupActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MyPlantsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddPlantActivity" />
-        <activity android:name=".PlantActivity"></activity>
+        <activity android:name=".AddPlantActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PlantActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
