@@ -73,6 +73,8 @@ public class MyPlantsActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.action_profile) {
+            Intent intent = new Intent(MyPlantsActivity.this, ProfileActivity.class);
+            startActivity(intent);
             return true;
         }
 
