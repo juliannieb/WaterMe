@@ -139,10 +139,6 @@ public class AddPlantActivity extends AppCompatActivity {
                 imgBitmap = BitmapFactory.decodeStream(imageStream);
                 imgPlant.setImageBitmap(imgBitmap);
             }
-            //InputStream inputStream = AddPlantActivity.this.getContentResolver().openInputStream(data.getData());
-            //Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-            //image.setImageBitmap(bitmap);
-            //Now you can do whatever you want with your inpustream, save it as file, upload to a server, decode a bitmap...
         }
     }
 
